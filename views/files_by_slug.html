@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title_for_layout }}</title>
+    {{ template "components/scripts/jquery" }}
+    {{ template "components/scripts/homepage" }}
+    {{ template "components/css/app_css" }}
+</head>
+<body>
+    {{ template "components/loading" }}
+    <div class="container">
+        {{ if .error }}
+            <div class="error-message">
+                <h2>Error</h2>
+                <p>{{ .error }}</p>
+            </div>
+        {{ else }}
+            <h1>Unlock your file</h1>
+            <h2>{{ .file.OriginalFilename }}</h2>
+            <form id="unlock-form" class="unlock-form">
+                <div class="password-input-wrapper">
+                    <input type="password" id="file-password" name="password" class="file-password" placeholder="Enter file password" required>
+                    <div id="password-error" class="error-message" style="display: none;"></div>
+                </div>
+                <button type="submit" class="submit-button">Unlock File</button>
+            </form>
+        {{ end }}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#unlock-form').on('submit', function(e) {
+                e.preventDefault();
+                $('#dvLoading').show();
+                $('#password-error').hide();
+                
+                $.ajax({
+                    url: '/files/check-password',
+                    type: 'POST',
+                    data: {
+                        slug: '{{ .file.Slug }}',
+                        password: $('#file-password').val()
+                    },
+                    success: function(response) {
+                        $('#dvLoading').hide();
+                        window.location.href = '/files/download/{{ .file.Slug }}?password=' + encodeURIComponent($('#file-password').val());
+                    },
+                    error: function(xhr, status, error) {
+                        $('#dvLoading').hide();
+                        $('#password-error').text(xhr.responseText).show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

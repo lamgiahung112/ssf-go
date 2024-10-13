@@ -1,0 +1,7 @@
+{{ define "components/scripts/redirect" }}
+{{ if .redirect }}
+<script type="text/javascript">
+    window.location = {{ .redirect }};
+</script>
+{{ end }}
+{{ end }}

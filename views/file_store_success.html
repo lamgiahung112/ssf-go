@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title_for_layout }}</title>
+    {{ template "components/scripts/jquery" }}
+    {{ template "components/css/app_css" }}
+</head>
+<body>
+    {{ template "components/loading" }}
+    
+    <div class="container success-container">
+        <h1>File Stored Successfully!</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/7518/7518748.png" alt="Success" class="success-image">
+        <div class="file-info">
+            <h2>File Link:</h2>
+            <div class="info-container">
+                <input type="text" id="file-link" value="{{ .file_link }}" readonly>
+            </div>
+            <h2>File Password:</h2>
+            <div class="info-container">
+                <input type="text" id="file-password" value="{{ .file_password }}" readonly>
+            </div>
+            <button id="copy-info" class="copy-button">Copy Share Info</button>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            var link = document.getElementById("file-link").value;
+            var password = document.getElementById("file-password").value;
+            var shareInfo = `Share file link: ${link}, password: ${password}`;
+            
+            var tempInput = document.createElement("textarea");
+            tempInput.value = shareInfo;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            alert("Share info copied to clipboard!");
+        }
+
+        document.getElementById("copy-info").addEventListener("click", copyToClipboard);
+    </script>
+</body>
+</html>

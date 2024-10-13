@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title_for_layout }}</title>
+    {{ template "components/scripts/jquery" }}
+    {{ template "components/scripts/homepage" }}
+    {{ template "components/css/app_css" }}
+</head>
+<body>
+    {{ template "components/loading" }}
+    <div class="container">
+        <h1>Let's start sharing</h1>
+        <form class="upload-form" method="post" action="/files/store" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" id="file-input" name="file" class="file-input" required>
+                <label for="file-input" class="file-input-label">Choose a file</label>
+            </div>
+            <div class="file-name" id="file-name"></div>
+            <input type="password" id="file-password" name="password" class="file-password" placeholder="Enter file password" required>
+            <button type="submit" class="submit-button">Share File</button>
+        </form>
+    </div>
+</body>
+</html>
